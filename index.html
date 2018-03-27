@@ -1,0 +1,328 @@
+<html>
+<head>
+	<link rel="stylesheet" href="https://codemirror.net/lib/codemirror.css">
+
+<meta charset="utf-8">
+  <link rel="stylesheet" href="">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+ <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+ <link rel="stylesheet" href="codepen.css">
+</head>
+<body>
+	<!--navbar start-->
+	<nav class="navbar navbar-expand-lg navbar-dark ">
+	<a class="navbar-brand" href="#"><i class="fab fa-codepen" ></i>&nbsp;
+	Untitled
+	<br/><span id=pen>A PEN BY ANONYMOUS</span></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+                <a class="nav-link" href="#"><button class="btn btn-secondary" class="btn code-btn" id="code-btn1"><i class="fas fa-cloud"></i> &nbsp;Save</button></a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="#"><button class="btn btn-secondary" class="btn code-btn" id="code-btn2"><i class="fas fa-cog"></i> &nbsp;Settings</button></a>
+              </li>
+
+              <li class="nav-item">
+                  <a class="nav-link" id="dropdownChangeView" data-toggle="dropdown" aria-expanded="false"><button   class="btn btn-secondary"class="btn  dropdown-toggle code-btn" id="code-btn3" ><i class="fas fa-eye"></i> &nbsp;Change View</button></a> 
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="#"><button class="btn btn-secondary" class="btn code-btn" id="code-btn4" data-toggle="modal" data-target="#loginModal"><i class="fas fa-sign-in-alt"></i> &nbsp;Log in</button></a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="#"><button  class="btn btn-secondary" class="btn code-btn" id="code-btn5" data-toggle="modal" data-target="#signupModal"><i class="fas fa-user-plus"></i> &nbsp;Sign up</button></a>
+              </li>
+      </ul>
+    </div>
+  </nav>
+<!-- navbar ends -->
+<!--textarea start-->
+  <div  id="editors" class="row no-gutters">
+  	<div class="col-md-4">
+  		<section id="code_editors">
+  			<div id="html" class="code_box">
+  				<h3>HTML</h3>
+  		<textarea  name="html"  class="form-control"></textarea>
+  	</div>
+  </section>
+</div>
+  	<div class="col-md-4">
+  		<section id="code_editors">
+  			<div id="css" class="code_box">
+  				<h3>CSS</h3>
+  	 <textarea  name="css" class="form-control"></textarea>
+  	</div>
+  </section>
+</div>
+  	<div class="col-md-4">
+  		<section id="code_editors">
+  			<div id="js" class="code_box">
+  				<h3>JS</h3>
+  				<textarea  name="js" class="form-control"></textarea>
+  	</div>
+  </section>
+</div>
+  </div>
+  <!--textarea ends-->
+  <!--editor output start-->
+  <div class="row no-gutters">
+  	<section id="output">
+  	<iframe></iframe>
+  </section>
+  </div>
+  <!--editor output ends--> 
+   <!--functionality js-->
+ <script src="https://codemirror.net/lib/codemirror.js"></script>
+
+<!-- For HTML/XML -->
+<script src="https://codemirror.net/mode/xml/xml.js"></script>
+<script src="https://codemirror.net/mode/htmlmixed/htmlmixed.js"></script>
+
+<!-- For CSS -->
+<script src="https://codemirror.net/mode/css/css.js"></script>
+
+<!-- For JS -->
+<script src="https://codemirror.net/mode/javascript/javascript.js"></script>
+<script type="text/javascript">
+	   (function() {
+	
+	// Base template
+	var base_tpl =
+			"<!doctype html>\n" +
+			"<html>\n\t" +
+      "<head>\n\t\t" +
+      "<meta charset=\"utf-8\">\n\t\t" +
+      "<title>Test</title>\n\n\t\t\n\t" +
+      "</head>\n\t" +
+      "<body>\n\t\n\t" +
+      "</body>\n" +
+      "</html>";
+	
+	var prepareSource = function() {
+		var html = html_editor.getValue(),
+				css = css_editor.getValue(),
+				js = js_editor.getValue(),
+				src = '';
+		
+		// HTML
+		src = base_tpl.replace('</body>', html + '</body>');
+		
+		// CSS
+		css = '<style>' + css + '</style>';
+		src = src.replace('</head>', css + '</head>');
+		
+		// Javascript
+		js = '<script>' + js + '<\/script>';
+		src = src.replace('</body>', js + '</body>');
+		
+		return src;
+	};
+	
+	var render = function() {
+		var source = prepareSource();
+		
+		var iframe = document.querySelector('#output iframe'),
+				iframe_doc = iframe.contentDocument;
+		
+		iframe_doc.open();
+		iframe_doc.write(source);
+		iframe_doc.close();
+	};
+	
+	
+	// EDITORS
+	
+	// CM OPTIONS
+	var cm_opt = {
+		mode: 'text/html',
+		gutter: true,
+		lineNumbers: true,
+	};
+	
+	// HTML EDITOR
+	var html_box = document.querySelector('#html textarea');
+	var html_editor = CodeMirror.fromTextArea(html_box, cm_opt);
+  
+  html_editor.on('change', function (inst, changes) {
+    render();
+  });
+	
+	// CSS EDITOR
+	cm_opt.mode = 'css';
+	var css_box = document.querySelector('#css textarea');
+	var css_editor = CodeMirror.fromTextArea(css_box, cm_opt);
+  
+  css_editor.on('change', function (inst, changes) {
+    render();
+  });
+	
+	// JAVASCRIPT EDITOR
+	cm_opt.mode = 'javascript';
+	var js_box = document.querySelector('#js textarea');
+	var js_editor = CodeMirror.fromTextArea(js_box, cm_opt);
+  
+  js_editor.on('change', function (inst, changes) {
+    render();
+  });
+	
+	
+	// RENDER CALL ON PAGE LOAD
+	// NOT NEEDED ANYMORE, SINCE WE RELY
+	// ON CODEMIRROR'S onChange OPTION THAT GETS
+	// TRIGGERED ON setValue
+	// render();
+	
+	
+	// NOT SO IMPORTANT - IF YOU NEED TO DO THIS
+	// THEN THIS SHOULD GO TO CSS
+	
+	/*
+		Fixing the Height of CodeMirror.
+		You might want to do this in CSS instead
+		of JS and override the styles from the main
+		codemirror.css
+	*/
+	var cms = document.querySelectorAll('.CodeMirror');
+	for (var i = 0; i < cms.length; i++) {
+		
+		cms[i].style.position = 'absolute';
+		cms[i].style.top = '30px';
+		cms[i].style.bottom = '0';
+		cms[i].style.left = '0';
+		cms[i].style.right = '0';
+    cms[i].style.height = '100%';
+	}
+	/*cms = document.querySelectorAll('.CodeMirror-scroll');
+	for (i = 0; i < cms.length; i++) {
+		cms[i].style.height = '100%';
+	}*/
+			
+}());
+</script>  -->
+<!--functional js ends-->
+<!-- login Modal start-->
+
+  <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h6 class="modal-title" id="exampleModalLabel"><i class="fas fa-sign-in-alt"></i> &nbsp;Existing User</h6>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form">
+                
+                <div class="col">
+                  <label for="inlineFormInputGroup">Username</label>
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">@</div>
+                    </div>
+                    <input type="text" class="form-control" id="inlineFormInputGroup">
+                  </div>
+                </div>
+
+                <div class="col">
+                  <label for="inlineFormInputGroup">Password</label>
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text"><i class="fas fa-lock"></i></div>
+                    </div>
+                    <input type="text" class="form-control" id="inlineFormInputGroup">
+                  </div>
+                </div>
+
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-success">Log In</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+<!--login model ends-->
+
+    <!-- Signup Modal -->
+    <div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModallLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h6 class="modal-title" id="exampleModalLabel"><i class="fas fa-user-plus"></i> &nbsp;New User</h6>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form">
+                
+                <div class="col">
+                  <label for="inlineFormInputGroup">Username</label>
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">@</div>
+                    </div>
+                    <input type="text" class="form-control" id="inlineFormInputGroup">
+                  </div>
+                </div>
+
+                <div class="col">
+                  <label for="inlineFormInputGroup">Full Name</label>
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text"><i class="fas fa-user"></i></div>
+                    </div>
+                    <input type="text" class="form-control" id="inlineFormInputGroup">
+                  </div>
+                </div>
+
+                <div class="col">
+                  <label for="inlineFormInputGroup">Email Address</label>
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text"><i class="fas fa-envelope"></i></div>
+                    </div>
+                    <input type="text" class="form-control" id="inlineFormInputGroup">
+                  </div>
+                </div>
+
+                <div class="col">
+                  <label for="inlineFormInputGroup">Password</label>
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text"><i class="fas fa-lock"></i></div>
+                    </div>
+                    <input type="text" class="form-control" id="inlineFormInputGroup">
+                  </div>
+                </div>
+
+
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-success">Sign Up</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+              </div>
+            </form>
+          </div>
+        </div>
+<!--signup model ends-->
+
+<script type="text/javascript" src=""></script>
+
+</html>
