@@ -4,7 +4,7 @@
 
 
 ### Demo
-![Demo_image](https://github.com/reenusihag/sandwitch/blob/master/Square.jpg)
+![Demo_image](https://github.com/reenusihag/sandwitch/blob/master/sandwitch.jpg)
 
 ### Using
 
